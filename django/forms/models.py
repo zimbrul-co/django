@@ -1116,6 +1116,11 @@ class InlineForeignKeyField(Field):
             orig = getattr(self.parent_instance, self.to_field)
         else:
             orig = self.parent_instance.pk
+        # strip dashes in case 'value' is an UUID
+        if isinstance(orig, str) and len(orig) == 32 \
+                and isinstance(value, str) and len(value) == 36 \
+                and value[8] == value[13] == value[18] == value[23] == '-':
+            value = value.replace('-', '')
         if str(value) != str(orig):
             raise ValidationError(self.error_messages['invalid_choice'], code='invalid_choice')
         return self.parent_instance
