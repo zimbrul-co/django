@@ -94,6 +94,7 @@ def create_permissions(
         )
         .values_list("content_type", "codename")
     )
+    all_perms = {tuple(x) for x in all_perms}
 
     perms = []
     for ct, (codename, name) in searched_perms:
