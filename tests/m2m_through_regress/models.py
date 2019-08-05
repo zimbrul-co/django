@@ -36,15 +36,15 @@ class Group(models.Model):
 
 # Using to_field on the through model
 class Car(models.Model):
-    make = models.CharField(max_length=20, unique=True, null=True)
-    drivers = models.ManyToManyField("Driver", through="CarDriver")
+    make = models.CharField(max_length=20, primary_key=True)
+    drivers = models.ManyToManyField('Driver', through='CarDriver')
 
     def __str__(self):
         return str(self.make)
 
 
 class Driver(models.Model):
-    name = models.CharField(max_length=20, unique=True, null=True)
+    name = models.CharField(max_length=20, primary_key=True)
 
     class Meta:
         ordering = ("name",)

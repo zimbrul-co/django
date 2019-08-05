@@ -8,7 +8,7 @@ from django.utils.functional import cached_property
 
 
 class Author(models.Model):
-    name = models.CharField(max_length=50, unique=True)
+    name = models.CharField(max_length=50, primary_key=True)
     first_book = models.ForeignKey(
         "Book", models.CASCADE, related_name="first_time_authors"
     )
@@ -17,7 +17,7 @@ class Author(models.Model):
     )
 
     class Meta:
-        ordering = ["id"]
+        ordering = ["name"]
 
     def __str__(self):
         return self.name
