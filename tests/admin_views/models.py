@@ -899,7 +899,7 @@ class Worker(models.Model):
 
 # Models for #23329
 class ReferencedByParent(models.Model):
-    name = models.CharField(max_length=20, unique=True)
+    name = models.CharField(max_length=20, primary_key=True)
 
 
 class ParentWithFK(models.Model):
@@ -921,7 +921,7 @@ class InlineReferer(models.Model):
 
 
 class ReferencedByInline(models.Model):
-    name = models.CharField(max_length=20, unique=True)
+    name = models.CharField(max_length=20, primary_key=True)
 
 
 class InlineReference(models.Model):
@@ -935,11 +935,11 @@ class InlineReference(models.Model):
 
 
 class Recipe(models.Model):
-    rname = models.CharField(max_length=20, unique=True)
+    rname = models.CharField(max_length=20, primary_key=True)
 
 
 class Ingredient(models.Model):
-    iname = models.CharField(max_length=20, unique=True)
+    iname = models.CharField(max_length=20, primary_key=True)
     recipes = models.ManyToManyField(Recipe, through='RecipeIngredient')
 
 
