@@ -58,11 +58,11 @@ class NonAutoPK(models.Model):
 
 # Chained foreign keys with to_field produce incorrect query #18432
 class Model1(models.Model):
-    pkey = models.IntegerField(unique=True, db_index=True)
+    pkey = models.IntegerField(primary_key=True)
 
 
 class Model2(models.Model):
-    model1 = models.ForeignKey(Model1, models.CASCADE, unique=True, to_field='pkey')
+    model1 = models.ForeignKey(Model1, models.CASCADE, primary_key=True, to_field='pkey')
 
 
 class Model3(models.Model):

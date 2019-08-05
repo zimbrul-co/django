@@ -3,7 +3,7 @@ from django.test import TestCase
 
 from .models import (
     Bar, Director, Favorites, HiddenPointer, ManualPrimaryKey, MultiModel,
-    Place, Pointer, RelatedModel, Restaurant, School, Target, ToFieldPointer,
+    Place, Pointer, RelatedModel, Restaurant, School, Target,
     UndergroundBar, Waiter,
 )
 
@@ -501,12 +501,6 @@ class OneToOneTests(TestCase):
         r = Restaurant.objects.first()
         r2 = Restaurant.objects.filter(pk__exact=r).first()
         self.assertEqual(r, r2)
-
-    def test_primary_key_to_field_filter(self):
-        target = Target.objects.create(name='foo')
-        pointer = ToFieldPointer.objects.create(target=target)
-        self.assertSequenceEqual(ToFieldPointer.objects.filter(target=target), [pointer])
-        self.assertSequenceEqual(ToFieldPointer.objects.filter(pk__exact=pointer), [pointer])
 
     def test_cached_relation_invalidated_on_save(self):
         """
