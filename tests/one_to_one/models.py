@@ -68,7 +68,7 @@ class MultiModel(models.Model):
 
 
 class Target(models.Model):
-    name = models.CharField(max_length=50, unique=True)
+    name = models.CharField(max_length=50, primary_key=True)
 
 
 class Pointer(models.Model):
