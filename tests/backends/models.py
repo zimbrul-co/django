@@ -106,7 +106,7 @@ class RawData(models.Model):
 
 
 class Author(models.Model):
-    name = models.CharField(max_length=255, unique=True)
+    name = models.CharField(max_length=255, primary_key=True)
 
 
 class Book(models.Model):
