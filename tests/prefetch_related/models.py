@@ -10,7 +10,7 @@ from django.utils.functional import cached_property
 
 
 class Author(models.Model):
-    name = models.CharField(max_length=50, unique=True)
+    name = models.CharField(max_length=50, primary_key=True)
     first_book = models.ForeignKey('Book', models.CASCADE, related_name='first_time_authors')
     favorite_authors = models.ManyToManyField(
         'self', through='FavoriteAuthors', symmetrical=False, related_name='favors_me')
@@ -19,7 +19,7 @@ class Author(models.Model):
         return self.name
 
     class Meta:
-        ordering = ['id']
+        ordering = ['name']
 
 
 class AuthorWithAge(Author):
@@ -28,7 +28,7 @@ class AuthorWithAge(Author):
 
 
 class FavoriteAuthors(models.Model):
-    author = models.ForeignKey(Author, models.CASCADE, to_field='name', related_name='i_like')
+    author = models.ForeignKey(Author, models.CASCADE, related_name='i_like')
     likes_author = models.ForeignKey(Author, models.CASCADE, to_field='name', related_name='likes_me')
 
     class Meta:

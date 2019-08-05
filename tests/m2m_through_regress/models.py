@@ -61,7 +61,7 @@ class B(models.Model):
 
 # Using to_field on the through model
 class Car(models.Model):
-    make = models.CharField(max_length=20, unique=True, null=True)
+    make = models.CharField(max_length=20, primary_key=True)
     drivers = models.ManyToManyField('Driver', through='CarDriver')
 
     def __str__(self):
@@ -69,7 +69,7 @@ class Car(models.Model):
 
 
 class Driver(models.Model):
-    name = models.CharField(max_length=20, unique=True, null=True)
+    name = models.CharField(max_length=20, primary_key=True)
 
     def __str__(self):
         return "%s" % self.name

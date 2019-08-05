@@ -132,7 +132,7 @@ class UniqueAnchor(models.Model):
     """This is a model that can be used as
     something for other models to point at"""
 
-    data = models.CharField(unique=True, max_length=30)
+    data = models.CharField(primary_key=True, max_length=30)
 
 
 class FKData(models.Model):

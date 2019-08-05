@@ -61,7 +61,7 @@ class Third(models.Model):
 
 
 class Parent(models.Model):
-    name = models.CharField(max_length=20, unique=True)
+    name = models.CharField(max_length=20, primary_key=True)
     bestchild = models.ForeignKey('Child', models.SET_NULL, null=True, related_name='favored_by')
 
 

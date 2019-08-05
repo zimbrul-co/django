@@ -30,7 +30,7 @@ class BaseModelValidationTests(ValidationTestCase):
             mtv.full_clean, 'parent',
             ['model to validate instance with id %r does not exist.' % mtv.parent_id]
         )
-        mtv = ModelToValidate(number=10, name='Some Name', ufm_id='Some Name')
+        mtv = ModelToValidate(number=10, name='Some Name', ufm_id=500)
         self.assertFieldFailsValidationWithMessage(
             mtv.full_clean, 'ufm',
             ["unique fields model instance with unique_charfield %r does not exist." % mtv.name]

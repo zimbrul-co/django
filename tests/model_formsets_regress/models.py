@@ -2,7 +2,7 @@ from django.db import models
 
 
 class User(models.Model):
-    username = models.CharField(max_length=12, unique=True)
+    username = models.CharField(max_length=12, primary_key=True)
     serial = models.IntegerField()
 
 
@@ -12,7 +12,7 @@ class UserSite(models.Model):
 
 
 class UserProfile(models.Model):
-    user = models.ForeignKey(User, models.CASCADE, unique=True, to_field="username")
+    user = models.ForeignKey(User, models.CASCADE, primary_key=True, to_field="username")
     about = models.TextField()
 
 

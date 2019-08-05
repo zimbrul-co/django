@@ -243,7 +243,7 @@ class ArticleStatus(models.Model):
 
 
 class Inventory(models.Model):
-    barcode = models.PositiveIntegerField(unique=True)
+    barcode = models.PositiveIntegerField(primary_key=True)
     parent = models.ForeignKey('self', models.SET_NULL, to_field='barcode', blank=True, null=True)
     name = models.CharField(blank=False, max_length=20)
 
