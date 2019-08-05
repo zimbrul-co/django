@@ -50,7 +50,7 @@ class ImprovedBook(models.Model):
 
 
 class Department(models.Model):
-    code = models.CharField(max_length=4, unique=True)
+    code = models.CharField(max_length=4, primary_key=True)
     description = models.CharField(max_length=50, blank=True, null=True)
 
     def __str__(self):

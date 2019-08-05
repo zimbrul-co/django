@@ -24,7 +24,7 @@ class Article(models.Model):
 
 
 class Car(models.Model):
-    make = models.CharField(max_length=100, null=True, unique=True)
+    make = models.CharField(max_length=100, primary_key=True)
 
 
 class Driver(models.Model):
