@@ -2,8 +2,8 @@ from django.forms.models import inlineformset_factory
 from django.test import TestCase
 
 from .models import (
-    AutoPKChildOfUUIDPKParent, AutoPKParent, ChildRelatedViaAK,
-    ChildWithEditablePK, ParentWithUUIDAlternateKey, UUIDPKChild,
+    AutoPKChildOfUUIDPKParent, AutoPKParent,
+    ChildWithEditablePK, UUIDPKChild,
     UUIDPKChildOfAutoPKParent, UUIDPKParent,
 )
 
@@ -64,15 +64,5 @@ class InlineFormsetTests(TestCase):
         object with an editable natural key for a primary key.
         """
         FormSet = inlineformset_factory(UUIDPKParent, ChildWithEditablePK, fields='__all__')
-        formset = FormSet()
-        self.assertIsNone(formset.forms[0].fields['parent'].initial)
-
-    def test_inlineformset_factory_nulls_default_pks_alternate_key_relation(self):
-        """
-        #24958 - Variant of test_inlineformset_factory_nulls_default_pks for
-        the case of a parent object with a UUID alternate key and a child
-        object that relates to that alternate key.
-        """
-        FormSet = inlineformset_factory(ParentWithUUIDAlternateKey, ChildRelatedViaAK, fields='__all__')
         formset = FormSet()
         self.assertIsNone(formset.forms[0].fields['parent'].initial)
