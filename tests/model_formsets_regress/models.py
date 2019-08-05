@@ -7,12 +7,12 @@ class User(models.Model):
 
 
 class UserSite(models.Model):
-    user = models.ForeignKey(User, models.CASCADE, to_field="username")
+    user = models.ForeignKey(User, models.CASCADE)
     data = models.IntegerField()
 
 
 class UserProfile(models.Model):
-    user = models.ForeignKey(User, models.CASCADE, unique=True, to_field="username")
+    user = models.ForeignKey(User, models.CASCADE, unique=True)
     about = models.TextField()
 
 
@@ -20,14 +20,13 @@ class UserPreferences(models.Model):
     user = models.OneToOneField(
         User,
         models.CASCADE,
-        to_field="username",
         primary_key=True,
     )
     favorite_number = models.IntegerField()
 
 
 class ProfileNetwork(models.Model):
-    profile = models.ForeignKey(UserProfile, models.CASCADE, to_field="user")
+    profile = models.ForeignKey(UserProfile, models.CASCADE)
     network = models.IntegerField()
     identifier = models.IntegerField()
 

@@ -12,8 +12,11 @@ from ..models import Article, Author, DecimalModel, Fan
 
 
 class GreatestTests(TestCase):
+    def _truncate_ms(self, val):
+        return val - timedelta(microseconds=val.microsecond)
+
     def test_basic(self):
-        now = timezone.now()
+        now = self._truncate_ms(timezone.now())
         before = now - timedelta(hours=1)
         Article.objects.create(
             title="Testing with Django", written=before, published=now
@@ -25,7 +28,7 @@ class GreatestTests(TestCase):
 
     @skipUnlessDBFeature("greatest_least_ignores_nulls")
     def test_ignores_null(self):
-        now = timezone.now()
+        now = self._truncate_ms(timezone.now())
         Article.objects.create(title="Testing with Django", written=now)
         articles = Article.objects.annotate(
             last_updated=Greatest("written", "published")
@@ -41,9 +44,11 @@ class GreatestTests(TestCase):
         self.assertIsNone(articles.first().last_updated)
 
     def test_coalesce_workaround(self):
-        past = datetime(1900, 1, 1)
-        now = timezone.now()
+        past = self._truncate_ms(datetime(1900, 1, 1))
+        now = self._truncate_ms(timezone.now())
         Article.objects.create(title="Testing with Django", written=now)
+        # from remote_pdb import RemotePdb
+        # RemotePdb('0.0.0.0', 4444).set_trace()
         articles = Article.objects.annotate(
             last_updated=Greatest(
                 Coalesce("written", past),
@@ -54,8 +59,8 @@ class GreatestTests(TestCase):
 
     @skipUnless(connection.vendor == "mysql", "MySQL-specific workaround")
     def test_coalesce_workaround_mysql(self):
-        past = datetime(1900, 1, 1)
-        now = timezone.now()
+        past = self._truncate_ms(datetime(1900, 1, 1))
+        now = self._truncate_ms(timezone.now())
         Article.objects.create(title="Testing with Django", written=now)
         past_sql = RawSQL("cast(%s as datetime)", (past,))
         articles = Article.objects.annotate(
@@ -67,7 +72,7 @@ class GreatestTests(TestCase):
         self.assertEqual(articles.first().last_updated, now)
 
     def test_all_null(self):
-        Article.objects.create(title="Testing with Django", written=timezone.now())
+        Article.objects.create(title="Testing with Django", written=self._truncate_ms(timezone.now()))
         articles = Article.objects.annotate(
             last_updated=Greatest("published", "updated")
         )

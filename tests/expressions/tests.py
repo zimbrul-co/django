@@ -1627,20 +1627,23 @@ class FTimeDeltaTests(TestCase):
 
         # e1: started one day after assigned, tiny duration, data
         # set so that end time has no fractional seconds, which
-        # tests an edge case on sqlite.
-        delay = datetime.timedelta(1)
-        end = stime + delay + delta1
-        e1 = Experiment.objects.create(
-            name="e1",
-            assigned=sday,
-            start=stime + delay,
-            end=end,
-            completed=end.date(),
-            estimated_time=delta1,
-        )
-        cls.deltas.append(delta1)
-        cls.delays.append(e1.start - datetime.datetime.combine(e1.assigned, midnight))
-        cls.days_long.append(e1.completed - e1.assigned)
+        # tests an edge case on sqlite. This Experiment is only
+        # included in the test data when the DB supports microsecond
+        # precision.
+        if connection.features.supports_microsecond_precision:
+            delay = datetime.timedelta(1)
+            end = stime + delay + delta1
+            e1 = Experiment.objects.create(
+                name="e1",
+                assigned=sday,
+                start=stime + delay,
+                end=end,
+                completed=end.date(),
+                estimated_time=delta1,
+            )
+            cls.deltas.append(delta1)
+            cls.delays.append(e1.start - datetime.datetime.combine(e1.assigned, midnight))
+            cls.days_long.append(e1.completed - e1.assigned)
 
         # e2: started three days after assigned, small duration
         end = stime + delta2
@@ -1724,6 +1727,51 @@ class FTimeDeltaTests(TestCase):
             test_set = [
                 e.name for e in Experiment.objects.filter(end__lt=F("start") + delta)
             ]
+
+    def test_delta_subtract(self):
+        for i in range(len(self.deltas)):
+            delta = self.deltas[i]
+            test_set = [e.name for e in Experiment.objects.filter(start__gt=F('end') - delta)]
+            self.assertEqual(test_set, self.expnames[:i])
+
+            test_set = [e.name for e in Experiment.objects.filter(start__gte=F('end') - delta)]
+            self.assertEqual(test_set, self.expnames[:i + 1])
+
+    def test_exclude(self):
+        for i in range(len(self.deltas)):
+            delta = self.deltas[i]
+            test_set = [e.name for e in Experiment.objects.exclude(end__lt=F('start') + delta)]
+            self.assertEqual(test_set, self.expnames[i:])
+
+            test_set = [e.name for e in Experiment.objects.exclude(end__lte=F('start') + delta)]
+            self.assertEqual(test_set, self.expnames[i + 1:])
+
+    def test_date_comparison(self):
+        for i in range(len(self.days_long)):
+            days = self.days_long[i]
+            test_set = [e.name for e in Experiment.objects.filter(completed__lt=F('assigned') + days)]
+            self.assertEqual(test_set, self.expnames[:i])
+
+            test_set = [e.name for e in Experiment.objects.filter(completed__lte=F('assigned') + days)]
+            self.assertEqual(test_set, self.expnames[:i + 1])
+
+    @skipUnlessDBFeature("supports_mixed_date_datetime_comparisons")
+    def test_mixed_comparisons1(self):
+        for i in range(len(self.delays)):
+            delay = self.delays[i]
+            if not connection.features.supports_microsecond_precision:
+                delay = datetime.timedelta(delay.days, delay.seconds)
+            test_set = [e.name for e in Experiment.objects.filter(assigned__gt=F('start') - delay)]
+            self.assertEqual(test_set, self.expnames[:i])
+
+            test_set = [e.name for e in Experiment.objects.filter(assigned__gte=F('start') - delay)]
+            self.assertEqual(test_set, self.expnames[:i + 1])
+
+    def test_mixed_comparisons2(self):
+        delays = [datetime.timedelta(delay.days) for delay in self.delays]
+        for i in range(len(delays)):
+            delay = delays[i]
+            test_set = [e.name for e in Experiment.objects.filter(start__lt=F('assigned') + delay)]
             self.assertEqual(test_set, self.expnames[:i])
 
             test_set = [
@@ -1989,14 +2037,26 @@ class FTimeDeltaTests(TestCase):
 
     @skipUnlessDBFeature("supports_temporal_subtraction")
     def test_time_subtraction(self):
-        Time.objects.create(time=datetime.time(12, 30, 15, 2345))
+        if connection.features.supports_microsecond_precision:
+            time = datetime.time(12, 30, 15, 2345)
+            timedelta = datetime.timedelta(hours=1, minutes=15, seconds=15, microseconds=2345)
+        else:
+            time = datetime.time(12, 30, 15)
+            timedelta = datetime.timedelta(hours=1, minutes=15, seconds=15)
+        Time.objects.create(time=time)
         queryset = Time.objects.annotate(
             difference=F("time") - Value(datetime.time(11, 15, 0)),
         )
-        self.assertEqual(
-            queryset.get().difference,
-            datetime.timedelta(hours=1, minutes=15, seconds=15, microseconds=2345),
-        )
+        if connection.features.supports_microsecond_precision:
+            self.assertEqual(
+                queryset.get().difference,
+                datetime.timedelta(hours=1, minutes=15, seconds=15, microseconds=2345),
+            )
+        else:
+            self.assertEqual(
+                queryset.get().difference,
+                datetime.timedelta(hours=1, minutes=15, seconds=15),
+            )
 
         queryset = Time.objects.annotate(
             difference=F("time") - Value(None, output_field=TimeField()),
@@ -2112,11 +2172,12 @@ class FTimeDeltaTests(TestCase):
             )
         )
         expected_start = datetime.datetime(2010, 6, 23, 9, 45, 0)
-        # subtract 30 microseconds
-        experiments = experiments.annotate(
-            new_start=F("new_start") + datetime.timedelta(microseconds=-30)
-        )
-        expected_start += datetime.timedelta(microseconds=+746970)
+        if connection.features.supports_microsecond_precision:
+            # subtract 30 microseconds
+            experiments = experiments.annotate(
+                new_start=F("new_start") + datetime.timedelta(microseconds=-30)
+            )
+            expected_start += datetime.timedelta(microseconds=+746970)
         experiments.update(start=F("new_start"))
         e0 = Experiment.objects.get(name="e0")
         self.assertEqual(e0.start, expected_start)

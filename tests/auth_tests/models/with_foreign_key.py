@@ -17,7 +17,7 @@ class CustomUserWithFKManager(BaseUserManager):
 class CustomUserWithFK(AbstractBaseUser):
     username = models.ForeignKey(Email, models.CASCADE, related_name="primary")
     email = models.ForeignKey(
-        Email, models.CASCADE, to_field="email", related_name="secondary"
+        Email, models.CASCADE, related_name="secondary"
     )
     group = models.ForeignKey(Group, models.CASCADE)
 

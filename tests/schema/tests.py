@@ -650,6 +650,7 @@ class SchemaTests(TransactionTestCase):
             editor.add_field(Author, new_field)
         drop_default_sql = editor.sql_alter_column_no_default % {
             "column": editor.quote_name(new_field.name),
+            "type": new_field.db_parameters(connection=connection.ops.connection),
         }
         self.assertFalse(
             any(drop_default_sql in query["sql"] for query in ctx.captured_queries)
@@ -1441,7 +1442,7 @@ class SchemaTests(TransactionTestCase):
                 app_label = "schema"
 
         class RelationModel(Model):
-            field = OneToOneField(CharModel, CASCADE, to_field="field")
+            field = OneToOneField(CharModel, CASCADE)
 
             class Meta:
                 app_label = "schema"
@@ -2137,7 +2138,7 @@ class SchemaTests(TransactionTestCase):
                 app_label = "schema"
 
         class Book(Model):
-            author = ForeignKey(Author, CASCADE, to_field="name")
+            author = ForeignKey(Author, CASCADE)
 
             class Meta:
                 app_label = "schema"
@@ -5201,7 +5202,7 @@ class SchemaTests(TransactionTestCase):
                 app_label = "schema"
 
         class Bar(Model):
-            foo = ForeignKey(Foo, CASCADE, to_field="field", db_constraint=False)
+            foo = ForeignKey(Foo, CASCADE, db_constraint=False)
 
             class Meta:
                 app_label = "schema"
@@ -5230,7 +5231,7 @@ class SchemaTests(TransactionTestCase):
                 app_label = "schema"
 
         class Bar(Model):
-            foo = ForeignKey(Foo, CASCADE, to_field="field", db_constraint=False)
+            foo = ForeignKey(Foo, CASCADE, db_constraint=False)
 
             class Meta:
                 app_label = "schema"
@@ -5438,6 +5439,9 @@ class SchemaTests(TransactionTestCase):
                         "deterministic = false)"
                     )
                     ci_collation = "case_insensitive"
+            elif connection.vendor == "cubrid":
+                cs_collation = "utf8_en_cs"
+                ci_collation = "utf8_en_ci"
             # Create the table.
             with connection.schema_editor() as editor:
                 editor.create_model(Author)

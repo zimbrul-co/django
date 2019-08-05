@@ -428,7 +428,7 @@ class RelativeFieldTests(SimpleTestCase):
             bad = models.IntegerField()  # No unique=True
 
         class Model(models.Model):
-            foreign_key = models.ForeignKey("Target", models.CASCADE, to_field="bad")
+            foreign_key = models.ForeignKey("Target", models.CASCADE)
 
         field = Model._meta.get_field("foreign_key")
         self.assertEqual(
@@ -452,7 +452,7 @@ class RelativeFieldTests(SimpleTestCase):
             bad = models.IntegerField()
 
         class Model(models.Model):
-            field = models.ForeignKey(Target, models.CASCADE, to_field="bad")
+            field = models.ForeignKey(Target, models.CASCADE)
 
         field = Model._meta.get_field("field")
         self.assertEqual(
@@ -485,7 +485,7 @@ class RelativeFieldTests(SimpleTestCase):
                 ]
 
         class Model(models.Model):
-            field = models.ForeignKey(Target, models.CASCADE, to_field="source")
+            field = models.ForeignKey(Target, models.CASCADE)
 
         field = Model._meta.get_field("field")
         self.assertEqual(
@@ -517,7 +517,7 @@ class RelativeFieldTests(SimpleTestCase):
                 ]
 
         class Model(models.Model):
-            field = models.ForeignKey(Target, models.CASCADE, to_field="source")
+            field = models.ForeignKey(Target, models.CASCADE)
 
         field = Model._meta.get_field("field")
         self.assertEqual(field.check(), [])

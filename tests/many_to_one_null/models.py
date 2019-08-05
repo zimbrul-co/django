@@ -29,5 +29,5 @@ class Car(models.Model):
 
 class Driver(models.Model):
     car = models.ForeignKey(
-        Car, models.SET_NULL, to_field="make", null=True, related_name="drivers"
+        Car, models.SET_NULL, null=True, related_name="drivers"
     )

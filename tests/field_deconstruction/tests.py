@@ -236,7 +236,7 @@ class FieldDeconstructionTests(SimpleTestCase):
         self.assertEqual(args, [])
         self.assertEqual(kwargs, {"to": "auth.user", "on_delete": models.SET_NULL})
         # Test to_field preservation
-        field = models.ForeignKey("auth.Permission", models.CASCADE, to_field="foobar")
+        field = models.ForeignKey("auth.Permission", models.CASCADE)
         name, path, args, kwargs = field.deconstruct()
         self.assertEqual(path, "django.db.models.ForeignKey")
         self.assertEqual(args, [])
@@ -244,7 +244,7 @@ class FieldDeconstructionTests(SimpleTestCase):
             kwargs,
             {
                 "to": "auth.permission",
-                "to_field": "foobar",
+                "to_field": "id",
                 "on_delete": models.CASCADE,
             },
         )
@@ -362,7 +362,7 @@ class FieldDeconstructionTests(SimpleTestCase):
         self.assertEqual(kwargs, {"to": "auth.user", "on_delete": models.SET_NULL})
         # Test to_field
         field = models.OneToOneField(
-            "auth.Permission", models.CASCADE, to_field="foobar"
+            "auth.Permission", models.CASCADE
         )
         name, path, args, kwargs = field.deconstruct()
         self.assertEqual(path, "django.db.models.OneToOneField")
@@ -371,7 +371,7 @@ class FieldDeconstructionTests(SimpleTestCase):
             kwargs,
             {
                 "to": "auth.permission",
-                "to_field": "foobar",
+                "to_field": "id",
                 "on_delete": models.CASCADE,
             },
         )

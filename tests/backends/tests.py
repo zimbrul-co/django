@@ -581,7 +581,7 @@ class BackendTestCase(TransactionTestCase):
         self.assertEqual(tuple(kwargs["extra"].values()), params[1:])
 
     def test_queries_bare_where(self):
-        sql = f"SELECT 1{connection.features.bare_select_suffix} WHERE 1=1"
+        sql = f"SELECT 1{connection.features.bare_select_suffix}"
         with connection.cursor() as cursor:
             cursor.execute(sql)
             self.assertEqual(cursor.fetchone(), (1,))

@@ -696,7 +696,6 @@ class Answer(models.Model):
         models.SET_NULL,
         blank=True,
         null=True,
-        to_field="uuid",
         related_name="uuid_answers",
         limit_choices_to=~models.Q(question__istartswith="not"),
     )
@@ -982,7 +981,6 @@ class ParentWithFK(models.Model):
     fk = models.ForeignKey(
         ReferencedByParent,
         models.CASCADE,
-        to_field="name",
         related_name="hidden+",
     )
 
@@ -1005,7 +1003,6 @@ class InlineReference(models.Model):
     fk = models.ForeignKey(
         ReferencedByInline,
         models.CASCADE,
-        to_field="name",
         related_name="hidden+",
     )
 
@@ -1020,8 +1017,8 @@ class Ingredient(models.Model):
 
 
 class RecipeIngredient(models.Model):
-    ingredient = models.ForeignKey(Ingredient, models.CASCADE, to_field="iname")
-    recipe = models.ForeignKey(Recipe, models.CASCADE, to_field="rname")
+    ingredient = models.ForeignKey(Ingredient, models.CASCADE)
+    recipe = models.ForeignKey(Recipe, models.CASCADE)
 
 
 # Model for #23839

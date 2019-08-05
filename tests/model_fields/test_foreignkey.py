@@ -146,7 +146,7 @@ class ForeignKeyTests(TestCase):
             pass
 
         class Related(models.Model):
-            child = models.ForeignKey(Child, on_delete=models.CASCADE, to_field="key")
+            child = models.ForeignKey(Child, on_delete=models.CASCADE)
 
         msg = (
             "'model_fields.Related.child' refers to field 'key' which is not "

@@ -30,10 +30,10 @@ class AuthorWithAge(Author):
 
 class FavoriteAuthors(models.Model):
     author = models.ForeignKey(
-        Author, models.CASCADE, to_field="name", related_name="i_like"
+        Author, models.CASCADE, related_name="i_like"
     )
     likes_author = models.ForeignKey(
-        Author, models.CASCADE, to_field="name", related_name="likes_me"
+        Author, models.CASCADE, related_name="likes_me"
     )
 
     class Meta:
@@ -42,7 +42,7 @@ class FavoriteAuthors(models.Model):
 
 class AuthorAddress(models.Model):
     author = models.ForeignKey(
-        Author, models.CASCADE, to_field="name", related_name="addresses"
+        Author, models.CASCADE, related_name="addresses"
     )
     address = models.TextField()
 
@@ -69,7 +69,6 @@ class Bio(models.Model):
         Author,
         models.CASCADE,
         primary_key=True,
-        to_field="name",
     )
     books = models.ManyToManyField(Book, blank=True)
 
