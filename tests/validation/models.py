@@ -27,6 +27,7 @@ class ModelToValidate(models.Model):
     ufm = models.ForeignKey(
         "UniqueFieldsModel",
         models.SET_NULL,
+        to_field="unique_charfield",
         blank=True,
         null=True,
     )

@@ -89,7 +89,7 @@ class HiddenInventoryManager(models.Manager):
 
 
 class Inventory(models.Model):
-    barcode = models.PositiveIntegerField(primary_key=True)
+    barcode = models.PositiveIntegerField(unique=True)
     parent = models.ForeignKey(
         "self", models.SET_NULL, to_field="barcode", blank=True, null=True
     )
@@ -209,7 +209,7 @@ class School(models.Model):
 
 
 class Profile(models.Model):
-    user = models.ForeignKey('auth.User', models.CASCADE)
+    user = models.ForeignKey("auth.User", models.CASCADE, to_field="username")
 
     def __str__(self):
         return self.user.username

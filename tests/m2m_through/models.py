@@ -134,14 +134,14 @@ class Relationship(models.Model):
 
 
 class Ingredient(models.Model):
-    iname = models.CharField(max_length=20, primary_key=True)
+    iname = models.CharField(max_length=20, unique=True)
 
     class Meta:
         ordering = ("iname",)
 
 
 class Recipe(models.Model):
-    rname = models.CharField(max_length=20, primary_key=True)
+    rname = models.CharField(max_length=20, unique=True)
     ingredients = models.ManyToManyField(
         Ingredient,
         through="RecipeIngredient",

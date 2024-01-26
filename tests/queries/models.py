@@ -88,7 +88,7 @@ class ExtraInfo(models.Model):
 
 class Author(models.Model):
     name = models.CharField(max_length=10)
-    num = models.IntegerField(primary_key=True)
+    num = models.IntegerField(unique=True)
     extra = models.ForeignKey(ExtraInfo, models.CASCADE)
 
     class Meta:
@@ -378,7 +378,7 @@ class Article(models.Model):
 
 
 class Food(models.Model):
-    name = models.CharField(max_length=20, primary_key=True)
+    name = models.CharField(max_length=20, unique=True)
 
     def __str__(self):
         return self.name
@@ -393,7 +393,7 @@ class Eaten(models.Model):
 
 
 class Node(models.Model):
-    num = models.IntegerField(primary_key=True)
+    num = models.IntegerField(unique=True)
     parent = models.ForeignKey("self", models.SET_NULL, to_field="num", null=True)
 
     def __str__(self):
@@ -532,7 +532,7 @@ class ModelA(models.Model):
 
 
 class Job(models.Model):
-    name = models.CharField(max_length=20, primary_key=True)
+    name = models.CharField(max_length=20, unique=True)
 
     def __str__(self):
         return self.name
@@ -541,7 +541,7 @@ class Job(models.Model):
 class JobResponsibilities(models.Model):
     job = models.ForeignKey(Job, models.CASCADE, to_field="name")
     responsibility = models.ForeignKey(
-        "Responsibility", models.CASCADE
+        "Responsibility", models.CASCADE, to_field="description"
     )
 
 
