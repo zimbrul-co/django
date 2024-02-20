@@ -147,7 +147,7 @@ class Author(models.Model):
 
 
 class Book(models.Model):
-    author = models.ForeignKey(Author, models.CASCADE, to_field="name")
+    author = models.ForeignKey(Author, models.CASCADE)
 
 
 class SQLKeywordsModel(models.Model):

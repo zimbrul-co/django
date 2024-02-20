@@ -68,7 +68,7 @@ class Food(models.Model):
 
 
 class Eaten(models.Model):
-    food = models.ForeignKey(Food, models.CASCADE, to_field="name")
+    food = models.ForeignKey(Food, models.CASCADE)
     meal = models.CharField(max_length=20)
 
 

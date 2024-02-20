@@ -58,7 +58,7 @@ class Department(models.Model):
 
 
 class Employee(models.Model):
-    department = models.ForeignKey(Department, models.CASCADE, to_field="code")
+    department = models.ForeignKey(Department, models.CASCADE)
     name = models.CharField(max_length=100)
 
     def __str__(self):

@@ -22,7 +22,7 @@ class Migration(migrations.Migration):
                 (
                     "author",
                     models.ForeignKey(
-                        settings.AUTH_USER_MODEL, models.CASCADE, to_field="id"
+                        settings.AUTH_USER_MODEL, models.CASCADE
                     ),
                 ),
             ],

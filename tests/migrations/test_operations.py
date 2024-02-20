@@ -342,7 +342,6 @@ class OperationTests(OperationTestBase):
                         models.CASCADE,
                         auto_created=True,
                         primary_key=True,
-                        to_field="id",
                         serialize=False,
                     ),
                 ),
@@ -2397,7 +2396,7 @@ class OperationTests(OperationTestBase):
                         (
                             "rider",
                             models.ForeignKey(
-                                "%s.Rider" % app_label, models.CASCADE, to_field="code"
+                                "%s.Rider" % app_label, models.CASCADE,
                             ),
                         ),
                     ],
@@ -2448,7 +2447,6 @@ class OperationTests(OperationTestBase):
                             models.ForeignKey(
                                 "%s.Rider" % app_label,
                                 models.CASCADE,
-                                to_field="code",
                                 related_name="+",
                             ),
                         ),
@@ -2540,7 +2538,7 @@ class OperationTests(OperationTestBase):
                         (
                             "rider",
                             models.ForeignKey(
-                                "%s.Rider" % app_label, models.CASCADE, to_field="slug"
+                                "%s.Rider" % app_label, models.CASCADE
                             ),
                         ),
                         ("slug", models.CharField(unique=True, max_length=100)),
@@ -2553,7 +2551,7 @@ class OperationTests(OperationTestBase):
                         (
                             "pony",
                             models.ForeignKey(
-                                "%s.Pony" % app_label, models.CASCADE, to_field="slug"
+                                "%s.Pony" % app_label, models.CASCADE
                             ),
                         ),
                     ],
@@ -2886,7 +2884,7 @@ class OperationTests(OperationTestBase):
                     ("id", models.AutoField(primary_key=True)),
                     (
                         "fk",
-                        models.ForeignKey("Model", models.CASCADE, to_field="field"),
+                        models.ForeignKey("Model", models.CASCADE),
                     ),
                     (
                         "fo",
@@ -5580,7 +5578,7 @@ class FieldOperationTests(SimpleTestCase):
         operation = FieldOperation(
             "Model",
             "field",
-            models.ForeignKey("Other", models.CASCADE, to_field="field"),
+            models.ForeignKey("Other", models.CASCADE),
         )
         self.assertIs(operation.references_field("Other", "field", "migrations"), True)
         self.assertIs(

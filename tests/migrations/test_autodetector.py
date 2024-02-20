@@ -1549,7 +1549,7 @@ class AutodetectorTests(BaseAutodetectorTests):
                     ("id", models.AutoField(primary_key=True)),
                     (
                         "foo",
-                        models.ForeignKey("app.Foo", models.CASCADE, to_field="field"),
+                        models.ForeignKey("app.Foo", models.CASCADE),
                     ),
                 ],
             ),
@@ -1571,7 +1571,7 @@ class AutodetectorTests(BaseAutodetectorTests):
                     (
                         "foo",
                         models.ForeignKey(
-                            "app.Foo", models.CASCADE, to_field="renamed_field"
+                            "app.Foo", models.CASCADE
                         ),
                     ),
                 ],

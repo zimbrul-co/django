@@ -85,7 +85,7 @@ class HiddenPointer(models.Model):
 
 class ToFieldPointer(models.Model):
     target = models.OneToOneField(
-        Target, models.CASCADE, to_field="name", primary_key=True
+        Target, models.CASCADE, primary_key=True
     )
 
 

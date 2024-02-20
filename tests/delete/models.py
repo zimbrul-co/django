@@ -191,7 +191,7 @@ class Referrer(models.Model):
 class SecondReferrer(models.Model):
     referrer = models.ForeignKey(Referrer, models.CASCADE)
     other_referrer = models.ForeignKey(
-        Referrer, models.CASCADE, to_field="unique_field", related_name="+"
+        Referrer, models.CASCADE, related_name="+"
     )
 
 

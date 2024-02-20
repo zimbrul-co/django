@@ -397,7 +397,6 @@ class StateTests(SimpleTestCase):
                             auto_created=True,
                             parent_link=True,
                             primary_key=True,
-                            to_field="id",
                             serialize=False,
                         ),
                     ),

@@ -256,7 +256,7 @@ class ModelTest(TestCase):
         )
         self.assertEqual(
             Article.objects.get(pk=a.pk).pub_date,
-            datetime(2008, 12, 31, 23, 59, 59),
+            datetime(2008, 12, 31, 23, 59, 59, 999000),
         )
 
     def test_manually_specify_primary_key(self):

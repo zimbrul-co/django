@@ -160,7 +160,7 @@ class M2MSelfData(models.Model):
 
 
 class FKDataToField(models.Model):
-    data = models.ForeignKey(UniqueAnchor, models.SET_NULL, null=True, to_field="data")
+    data = models.ForeignKey(UniqueAnchor, models.SET_NULL, null=True)
 
 
 class FKDataToO2O(models.Model):

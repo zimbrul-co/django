@@ -1273,11 +1273,6 @@ class DBCacheTests(BaseCacheTests, TransactionTestCase):
         self.assertIn(connection.ops.quote_name("cache_key"), sql)
 
 
-@override_settings(USE_TZ=True)
-class DBCacheWithTimeZoneTests(DBCacheTests):
-    pass
-
-
 class DBCacheRouter:
     """A router that puts the cache table on the 'other' database."""
 

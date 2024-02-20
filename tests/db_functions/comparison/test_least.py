@@ -12,8 +12,11 @@ from ..models import Article, Author, DecimalModel, Fan
 
 
 class LeastTests(TestCase):
+    def _truncate_ms(self, val):
+        return val - timedelta(microseconds=val.microsecond)
+
     def test_basic(self):
-        now = timezone.now()
+        now = self._truncate_ms(timezone.now())
         before = now - timedelta(hours=1)
         Article.objects.create(
             title="Testing with Django", written=before, published=now
@@ -23,7 +26,7 @@ class LeastTests(TestCase):
 
     @skipUnlessDBFeature("greatest_least_ignores_nulls")
     def test_ignores_null(self):
-        now = timezone.now()
+        now = self._truncate_ms(timezone.now())
         Article.objects.create(title="Testing with Django", written=now)
         articles = Article.objects.annotate(
             first_updated=Least("written", "published"),
@@ -32,13 +35,13 @@ class LeastTests(TestCase):
 
     @skipIfDBFeature("greatest_least_ignores_nulls")
     def test_propagates_null(self):
-        Article.objects.create(title="Testing with Django", written=timezone.now())
+        Article.objects.create(title="Testing with Django", written=self._truncate_ms(timezone.now()))
         articles = Article.objects.annotate(first_updated=Least("written", "published"))
         self.assertIsNone(articles.first().first_updated)
 
     def test_coalesce_workaround(self):
-        future = datetime(2100, 1, 1)
-        now = timezone.now()
+        future = self._truncate_ms(datetime(2100, 1, 1))
+        now = self._truncate_ms(timezone.now())
         Article.objects.create(title="Testing with Django", written=now)
         articles = Article.objects.annotate(
             last_updated=Least(

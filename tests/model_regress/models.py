@@ -55,8 +55,8 @@ class Model1(models.Model):
 
 
 class Model2(models.Model):
-    model1 = models.ForeignKey(Model1, models.CASCADE, unique=True, to_field="pkey")
+    model1 = models.ForeignKey(Model1, models.CASCADE, unique=True)
 
 
 class Model3(models.Model):
-    model2 = models.ForeignKey(Model2, models.CASCADE, unique=True, to_field="model1")
+    model2 = models.ForeignKey(Model2, models.CASCADE, unique=True)

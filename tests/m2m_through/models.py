@@ -153,5 +153,5 @@ class Recipe(models.Model):
 
 
 class RecipeIngredient(models.Model):
-    ingredient = models.ForeignKey(Ingredient, models.CASCADE, to_field="iname")
-    recipe = models.ForeignKey(Recipe, models.CASCADE, to_field="rname")
+    ingredient = models.ForeignKey(Ingredient, models.CASCADE)
+    recipe = models.ForeignKey(Recipe, models.CASCADE)

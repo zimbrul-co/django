@@ -72,8 +72,8 @@ class TestDbCreationTests(SimpleTestCase):
         test_connection = get_connection_copy()
         test_connection.settings_dict["TEST"]["MIGRATE"] = False
         creation = test_connection.creation_class(test_connection)
-        if connection.vendor == "oracle":
-            # Don't close connection on Oracle.
+        if connection.vendor in ["oracle", "cubrid"]:
+            # Don't close connection on Oracle or CUBRID.
             creation.connection.close = mock.Mock()
         old_database_name = test_connection.settings_dict["NAME"]
         try:
@@ -102,8 +102,8 @@ class TestDbCreationTests(SimpleTestCase):
         test_connection = get_connection_copy()
         test_connection.settings_dict["TEST"]["MIGRATE"] = False
         creation = test_connection.creation_class(test_connection)
-        if connection.vendor == "oracle":
-            # Don't close connection on Oracle.
+        if connection.vendor in ["oracle", "cubrid"]:
+            # Don't close connection on Oracle or CUBRID.
             creation.connection.close = mock.Mock()
         old_database_name = test_connection.settings_dict["NAME"]
         try:
@@ -126,8 +126,8 @@ class TestDbCreationTests(SimpleTestCase):
         test_connection = get_connection_copy()
         test_connection.settings_dict["TEST"]["MIGRATE"] = True
         creation = test_connection.creation_class(test_connection)
-        if connection.vendor == "oracle":
-            # Don't close connection on Oracle.
+        if connection.vendor in ["oracle", "cubrid"]:
+            # Don't close connection on Oracle or CUBRID.
             creation.connection.close = mock.Mock()
         old_database_name = test_connection.settings_dict["NAME"]
         try:
@@ -156,8 +156,8 @@ class TestDbCreationTests(SimpleTestCase):
         """
         test_connection = get_connection_copy()
         creation = test_connection.creation_class(test_connection)
-        if connection.vendor == "oracle":
-            # Don't close connection on Oracle.
+        if connection.vendor in ["oracle", "cubrid"]:
+            # Don't close connection on Oracle or CUBRID.
             creation.connection.close = mock.Mock()
         old_database_name = test_connection.settings_dict["NAME"]
         try:

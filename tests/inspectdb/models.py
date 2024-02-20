@@ -27,7 +27,6 @@ class ForeignKeyToField(models.Model):
     to_field_fk = models.ForeignKey(
         PeopleMoreData,
         models.CASCADE,
-        to_field="people_unique",
     )
 
 

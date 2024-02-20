@@ -37,7 +37,6 @@ ops = [
                 models.ForeignKey(
                     "gis_migrations.Neighborhood",
                     models.SET_NULL,
-                    to_field="id",
                     null=True,
                 ),
             ),

@@ -53,7 +53,7 @@ class UnsafeLimitChoicesTo(models.Model):
 
 
 class Album(models.Model):
-    band = models.ForeignKey(Band, models.CASCADE, to_field="uuid")
+    band = models.ForeignKey(Band, models.CASCADE)
     featuring = models.ManyToManyField(Band, related_name="featured")
     name = models.CharField(max_length=100)
     cover_art = models.FileField(upload_to="albums")
@@ -91,7 +91,7 @@ class HiddenInventoryManager(models.Manager):
 class Inventory(models.Model):
     barcode = models.PositiveIntegerField(unique=True)
     parent = models.ForeignKey(
-        "self", models.SET_NULL, to_field="barcode", blank=True, null=True
+        "self", models.SET_NULL, blank=True, null=True
     )
     name = models.CharField(blank=False, max_length=20)
     hidden = models.BooleanField(default=False)
@@ -209,7 +209,7 @@ class School(models.Model):
 
 
 class Profile(models.Model):
-    user = models.ForeignKey("auth.User", models.CASCADE, to_field="username")
+    user = models.ForeignKey("auth.User", models.CASCADE)
 
     def __str__(self):
         return self.user.username

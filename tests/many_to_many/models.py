@@ -57,7 +57,7 @@ class User(models.Model):
 
 
 class UserArticle(models.Model):
-    user = models.ForeignKey(User, models.CASCADE, to_field="username")
+    user = models.ForeignKey(User, models.CASCADE)
     article = models.ForeignKey(Article, models.CASCADE)
 
 

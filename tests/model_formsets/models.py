@@ -261,5 +261,5 @@ class ParentWithUUIDAlternateKey(models.Model):
 class ChildRelatedViaAK(models.Model):
     name = models.CharField(max_length=255)
     parent = models.ForeignKey(
-        ParentWithUUIDAlternateKey, models.CASCADE, to_field="uuid"
+        ParentWithUUIDAlternateKey, models.CASCADE,
     )

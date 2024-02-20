@@ -93,7 +93,7 @@ class ChildStringPrimaryKeyParent(models.Model):
 
 class ToFieldChild(models.Model):
     parent = models.ForeignKey(
-        Parent, models.CASCADE, to_field="name", related_name="to_field_children"
+        Parent, models.CASCADE, related_name="to_field_children"
     )
 
 

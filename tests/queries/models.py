@@ -115,7 +115,7 @@ class Item(models.Model):
 
 class Report(models.Model):
     name = models.CharField(max_length=10)
-    creator = models.ForeignKey(Author, models.SET_NULL, to_field="num", null=True)
+    creator = models.ForeignKey(Author, models.SET_NULL, null=True)
 
     def __str__(self):
         return self.name
@@ -385,7 +385,7 @@ class Food(models.Model):
 
 
 class Eaten(models.Model):
-    food = models.ForeignKey(Food, models.SET_NULL, to_field="name", null=True)
+    food = models.ForeignKey(Food, models.SET_NULL, null=True)
     meal = models.CharField(max_length=20)
 
     def __str__(self):
@@ -394,7 +394,7 @@ class Eaten(models.Model):
 
 class Node(models.Model):
     num = models.IntegerField(unique=True)
-    parent = models.ForeignKey("self", models.SET_NULL, to_field="num", null=True)
+    parent = models.ForeignKey("self", models.SET_NULL, null=True)
 
     def __str__(self):
         return str(self.num)
@@ -539,9 +539,9 @@ class Job(models.Model):
 
 
 class JobResponsibilities(models.Model):
-    job = models.ForeignKey(Job, models.CASCADE, to_field="name")
+    job = models.ForeignKey(Job, models.CASCADE)
     responsibility = models.ForeignKey(
-        "Responsibility", models.CASCADE, to_field="description"
+        "Responsibility", models.CASCADE
     )
 
 

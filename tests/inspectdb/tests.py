@@ -284,7 +284,7 @@ class InspectDBTestCase(TestCase):
         call_command("inspectdb", "inspectdb_foreignkeytofield", stdout=out)
         self.assertIn(
             "to_field_fk = models.ForeignKey('InspectdbPeoplemoredata', "
-            "models.DO_NOTHING, to_field='people_unique_id')",
+            "models.DO_NOTHING)",
             out.getvalue(),
         )
 

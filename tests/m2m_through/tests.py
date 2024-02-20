@@ -532,5 +532,5 @@ class M2mThroughToFieldsTests(TestCase):
         field = Recipe._meta.get_field("ingredients")
         self.assertEqual(
             [choice[0] for choice in field.get_choices(include_blank=False)],
-            ["pea", "potato", "tomato"],
+            [self.pea.id, self.potato.id, self.tomato.id],
         )

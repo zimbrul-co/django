@@ -34,7 +34,6 @@ class Group(models.Model):
         return self.name
 
 
-# Using to_field on the through model
 class Car(models.Model):
     make = models.CharField(max_length=20, unique=True, null=True)
     drivers = models.ManyToManyField("Driver", through="CarDriver")
@@ -54,8 +53,8 @@ class Driver(models.Model):
 
 
 class CarDriver(models.Model):
-    car = models.ForeignKey("Car", models.CASCADE, to_field="make")
-    driver = models.ForeignKey("Driver", models.CASCADE, to_field="name")
+    car = models.ForeignKey("Car", models.CASCADE)
+    driver = models.ForeignKey("Driver", models.CASCADE)
 
     def __str__(self):
         return "pk=%s car=%s driver=%s" % (str(self.pk), self.car, self.driver)

@@ -1,0 +1,2 @@
+django_cubrid @ git+https://github.com/zimbrul-co/django_cubrid.git@master#egg=django_cubrid
+

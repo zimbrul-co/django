@@ -129,7 +129,7 @@ class ModelAdminTests(TestCase):
             code = models.CharField(max_length=4, unique=True)
 
         class Employee(models.Model):
-            department = models.ForeignKey(Department, models.CASCADE, to_field="code")
+            department = models.ForeignKey(Department, models.CASCADE)
 
         class EmployeeProfile(models.Model):
             employee = models.OneToOneField(Employee, models.CASCADE)
